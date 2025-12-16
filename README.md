@@ -1,3 +1,61 @@
+---
+# INFO 4345 – Web Application Security Enhancement
+
+## Course Information
+- Course: INFO 4345 Web Application Security
+- Project Type: Security Enhancement of Existing Web Application
+
+|     NAME      |   MATRIC NO.   |     TASK      | 
+| ------------- | ------------- | ------------- |
+|1. Amir Mustaqim Bin Ismail | 2218607 | Objectives, Travel Package |
+|2. Muhammad Zikry Bin Zulkipli | 2219579 |  Features & Functionalities, Hotel, Prayer Space  |
+|3. Moha Math Yafa  | 2124769  |  ERD, Login, Destinations & Flights   |
+|4. ADAM AZRAEI BIN AZHAR |  2215967 |    Title & Introduction, Restaurant |
+|5. ALIF NAQIUDIN BIN AMIENUR ISQANDAR |  2219909 |   Sequence Diagram    
+
+## Web Application Title
+Taqwa Travel – Shariah-Compliant Travel Planner
+
+## Introduction
+Traveling is a universal activity that bridges cultures, fosters understanding, and creates lasting memories. However, for Muslim travelers, finding accommodations, dining options, and prayer facilities that align with Islamic principles can be a significant challenge. The lack of easily accessible information on Shariah-compliant services often leads to inconvenience and limits their ability to enjoy travel experiences to the fullest.
+
+## Objective of Security Enhancements
+Explain why security hardening is required.
+
+## Web Application Security Enhancements
+
+### 1. Input Validation
+### 2. Authentication
+### 3. Authorization
+### 4. XSS and CSRF Prevention
+### 5. Database Security
+### 6. File Security
+
+## References
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Group-Project
 ### Group F Members
 |     NAME      |   MATRIC NO.   |     TASK      | 
