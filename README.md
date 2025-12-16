@@ -25,11 +25,135 @@ Explain why security hardening is required.
 ## Web Application Security Enhancements
 
 ### 1. Input Validation
+Input validation is implemented on both client-side using HTML5 validation attributes and server-side using Laravel request validation to ensure only valid and safe input is processed by the system.
+- Client-side validation (login.blade.php)
+  ```html
+  <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-600">{{ __('Email') }}</label>
+                    <input id="email" type="email" name="email" required autofocus
+                           class="login-input"> <!-- Updated class -->
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="block text-sm font-medium text-gray-600">{{ __('Password') }}</label>
+                    <input id="password" type="password" name="password" required
+                           class="login-input"> <!-- Updated class -->
+                </div>
+
+                <div class="block mb-0">
+                    <label for="remember_me" class="flex items-center space-x-2">
+                        <input id="remember_me" type="checkbox" name="remember" class="mr-2">
+                        <span class="text-sm text-gray-600">{{ __('Remember me') }}</span>
+                    </label>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    @if (Route::has('password.request'))
+                        <a href="{{ route('password.request') }}" class="text-sm text-indigo-600 hover:text-indigo-800">
+                            {{ __('Forgot your password?') }}
+                        </a>
+                    @endif
+
+                    <button type="submit" class="login-button">
+                        {{ __('Log in') }}
+                    </button>
+                </div>
+  ```
+- Server-side validation (RegisteredUserController.php)
+  ```php
+  $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+            ]);
+  ```
+
 ### 2. Authentication
+Authentication is enhanced by implementing secure password hashing and session regeneration upon successful login, following Laravel authentication best practices.
+- Password Hashing (RegisteredUserController.php)
+    ```php
+     $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+            ]);
+    ```
+- Login Authentication (AuthenticatedSessionController.php)
+  ```php
+  public function store(Request $request)
+   {
+      // Validate the login credentials
+      $credentials = $request->only('email', 'password');
+    
+      // Attempt to log in the user
+      if (Auth::attempt($credentials)) {
+          // Regenerate the session to protect against session fixation
+          $request->session()->regenerate();
+    
+           // Redirect the user to the home page
+           return redirect()->intended('/');
+      }
+    
+      // If authentication fails, redirect back with an error message
+      return back()->withErrors([
+           'email' => 'The provided credentials do not match our records.',
+       ]);
+   }
+  ```
 ### 3. Authorization
+Authorization controls are implemented using Laravel middleware and role-based checks to ensure users can only access resources permitted to their roles. As shown in *web.php*,
+```php
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
+```
+
 ### 4. XSS and CSRF Prevention
+Cross-Site Scripting (XSS) is prevented through escaped Blade output, while Cross-Site Request Forgery (CSRF) attacks are mitigated using Laravel’s built-in CSRF token mechanism. As shown in *login.blade.php*,
+```html
+@csrf
+<div class="mb-4">
+    <label for="email" class="block text-sm font-medium text-gray-600">{{ __('Email') }}</label>
+    <input id="email" type="email" name="email" required autofocus
+        class="login-input"> <!-- Updated class -->
+</div>
+
+<div class="mb-4">
+    <label for="password" class="block text-sm font-medium text-gray-600">{{ __('Password') }}</label>
+    <input id="password" type="password" name="password" required
+        class="login-input"> <!-- Updated class -->
+</div>
+
+<div class="block mb-0">
+    <label for="remember_me" class="flex items-center space-x-2">
+    <input id="remember_me" type="checkbox" name="remember" class="mr-2">
+        <span class="text-sm text-gray-600">{{ __('Remember me') }}</span>
+    </label>
+ </div>
+
+<div class="flex items-center justify-between">
+    @if (Route::has('password.request'))
+        <a href="{{ route('password.request') }}" class="text-sm text-indigo-600 hover:text-indigo-800">
+        {{ __('Forgot your password?') }}
+        </a>
+     @endif
+
+    <button type="submit" class="login-button">
+    {{ __('Log in') }}
+     </button>
+</div>
+```
 ### 5. Database Security
+SQL injection is prevented by using Laravel Eloquent ORM and parameterized queries, ensuring user input is never directly executed in raw SQL statements.
+
 ### 6. File Security
+File security is enforced through strict file validation, secure storage configuration, and protection of sensitive server files to prevent unauthorized access and file leaks.
 
 ## References
 
