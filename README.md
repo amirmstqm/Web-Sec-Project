@@ -7,11 +7,11 @@
 
 |     NAME      |   MATRIC NO.   |     TASK      | 
 | ------------- | ------------- | ------------- |
-|1. Amir Mustaqim Bin Ismail | 2218607 | Objectives, Travel Package |
-|2. Muhammad Zikry Bin Zulkipli | 2219579 |  Features & Functionalities, Hotel, Prayer Space  |
-|3. Moha Math Yafa  | 2124769  |  ERD, Login, Destinations & Flights   |
-|4. Adam Azraei Bin Azhar |  2215967 |    Title & Introduction, Restaurant |
-|5. Alif Naqiuddin Bin Amienul Isqandar |  2219909 |   Sequence Diagram    
+|1. Amir Mustaqim Bin Ismail | 2218607 | Input Validation, Authentication |
+|2. Muhammad Zikry Bin Zulkipli | 2219579 | Authorization  |
+|3. Moha Math Yafa  | 2124769  | XSS and CSRF Prevention   |
+|4. Adam Azraei Bin Azhar |  2215967 | Database Security |
+|5. Alif Naqiuddin Bin Amienul Isqandar |  2219909 |   File Security    
 
 ## Web Application Title
 Taqwa Travel – Shariah-Compliant Travel Planner
