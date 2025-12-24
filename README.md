@@ -177,7 +177,7 @@ An audit was conducted on multiple controllers including AuthenticatedSessionCon
   - no unauthorized access
 
 - **URL Parameter Injection**<br>
-payload: http://127.0.0.1:8000/login/destination/5' <br>
+payload: http://127.0.0.1:8000/login/destination/1' <br>
 Result: ![urlpaylaod](https://github.com/amirmstqm/Web-Sec-Project/blob/main/images/screenshot-url%20parameter%20injection.png)
 
 - **Analyze vulnerability**<br>
@@ -225,8 +225,39 @@ example from *DestinationController.php*
             'filter' => 'nullable|string|in:affordable,expensive',
         ]);
 ```
-#### 5.3 Error Handling & System Information
-##### 5.3.1 Disable Detailed Errors
+#### 5.3 Hardening Error Handling & System Information
+##### 5.3.1 Disable Detailed Errors. In .env file:<b>
+Before: <b>
+```html
+APP_DEBUG=true
+```
+After: <b>
+```html
+APP_DEBUG=false
+```
+- stack traces hidden
+- SQL errors not exposed
+
+##### 5.3.2 Generic Error Page.<b>
+Laravel default:<b>
+```php
+abort(403);
+```
+ In our project:<b>
+ ```php
+return back()->withErrors([
+    'email' => 'The provided credentials do not match our records.'
+]);
+```
+- No sensitive information leaked.
+
+
+
+
+
+
+ 
+
 
 
 
