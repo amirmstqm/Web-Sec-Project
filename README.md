@@ -150,10 +150,10 @@ Cross-Site Scripting (XSS) is prevented through escaped Blade output, while Cros
 </div>
 ```
 ### 5. Database Security
-### 5.1 Initial Security Audit & Vulnerability Identification
+#### 5.1 Initial Security Audit & Vulnerability Identification
 An audit was conducted on multiple controllers including AuthenticatedSessionController, BookingController, DestinationController, and RegisteredUserController. User inputs such as URL parameters, form submissions, and request payloads were analyzed for unsafe database interactions.
 
-### 5.1.1 Identify Injection Point
+##### 5.1.1 Identify Injection Point
 |     Features      |   Controller  |    input     | 
 | ------------- | ------------- | ------------- |
 |1. Login  | AuthenticedSessionController | email, password |
@@ -162,11 +162,36 @@ An audit was conducted on multiple controllers including AuthenticatedSessionCon
 |4. Destination view | DestinationController | destination id |
 |5. Search | DestinationController | destination, dates
 
-### 5.1.2 Test for SQL Injection
-- Error exposure <br>
+#### 5.1.2 Test for SQL Injection
+- **Error exposure** <br>
   payload: ' <br>
   Result:
-  ![login attemp](
+  ![login attemp](https://github.com/amirmstqm/Web-Sec-Project/blob/main/images/screenshot-%20login%20attemp.png)
+  -  no SQL error shown
+  -  Laravel generic error handling
+
+- **Authentication Bypass** <br>
+  payload: ' OR '1'='1' -- <br>
+  Result:<img width="1690" height="890" alt="image" src="https://github.com/user-attachments/assets/7a2b98c1-243d-4694-9c88-900975312eb4" />
+  - login failed
+  - no unauthorized access
+
+- **URL Parameter Injection**<br>
+payload: http://127.0.0.1:8000/login/destination/5' <br>
+Result: ![urlpaylaod](https://github.com/amirmstqm/Web-Sec-Project/blob/main/images/screenshot-url%20parameter%20injection.png)
+
+- **Analyze vulnerability**<br>
+  Manual SQL Injection testing was conducted by injecting common payloads into the login form and URL parameters. The application rejected all injection attempts. No SQL errors or system information were displayed, and authentication bypass was unsuccessful.
+  
+
+
+#### 5.2 Defensive Programming (mitigation)
+
+
+
+
+
+  
 
 ### 6. File Security
 File security is enforced through strict file validation, secure storage configuration, and protection of sensitive server files to prevent unauthorized access and file leaks.
