@@ -150,7 +150,23 @@ Cross-Site Scripting (XSS) is prevented through escaped Blade output, while Cros
 </div>
 ```
 ### 5. Database Security
-SQL injection is prevented by using Laravel Eloquent ORM and parameterized queries, ensuring user input is never directly executed in raw SQL statements.
+### 5.1 Initial Security Audit & Vulnerability Identification
+An audit was conducted on multiple controllers including AuthenticatedSessionController, BookingController, DestinationController, and RegisteredUserController. User inputs such as URL parameters, form submissions, and request payloads were analyzed for unsafe database interactions.
+
+### 5.1.1 Identify Injection Point
+|     Features      |   Controller  |    input     | 
+| ------------- | ------------- | ------------- |
+|1. Login  | AuthenticedSessionController | email, password |
+|2. Registration | RegisteredUserController | name, email, password |
+|3. Booking | BookingController | booking id, form input |
+|4. Destination view | DestinationController | destination id |
+|5. Search | DestinationController | destination, dates
+
+### 5.1.2 Test for SQL Injection
+- Error exposure <br>
+  payload: ' <br>
+  Result:
+  ![login attemp](
 
 ### 6. File Security
 File security is enforced through strict file validation, secure storage configuration, and protection of sensitive server files to prevent unauthorized access and file leaks.
