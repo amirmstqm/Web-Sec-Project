@@ -162,7 +162,7 @@ An audit was conducted on multiple controllers including AuthenticatedSessionCon
 |4. Destination view | DestinationController | destination id |
 |5. Search | DestinationController | search parameters
 
-#### 5.1.2 Test for SQL Injection
+##### 5.1.2 Test for SQL Injection
 - **Error exposure** <br>
   payload: ' <br>
   Result:
