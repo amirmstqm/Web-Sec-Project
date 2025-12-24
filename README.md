@@ -251,23 +251,57 @@ return back()->withErrors([
 ```
 - No sensitive information leaked.
 
+#### 5.4 Database Acount Privilege Account Reduction (Focus: Principle of Least Privilege)
+##### 5.4.1 Identify Database User
+example:
+```env
+DB_DATABASE=taqwa
+```
 
+##### 5.4.2 Review Permissions
+**Before:**
+```sql
+GRANT ALL PRIVILEGES ON Web-Sec-Project.* TO 'taqwa'@'localhost';
+```
 
+##### 5.4.3 Reduce Privilege
+**After:**
+```sql
+GRANT SELECT, INSERT, UPDATE, DELETE ON Web-Sec-Project.* TO 'taqwa'@'localhost';
+REVOKE DROP, ALTER ON Web-Sec-Project.* FROM 'taqwa'@'localhost';
+```
+- this implementation help limits damage if attack succeeds
+- meets least privilege principle
 
+#### 5.5 Authorised and INsecure Direct Object References (IDOR) Audit
+##### 5.5.1 Identify Direct Object References
+example from *BookingController.php*
+```php
+public function show($id)
+```
 
+this line of code can be seen on the URL:
+```code
+/booking/5
+```
+- the `/5` is the sequential ID
+- Guessable
 
- 
+##### 5.5.2 Test for IDOR
+**Before implementation:**
+- User A accessed User B's booking
+- No ownership verification
 
+##### 5.5.3 Implement Authorisation Checks
+**Rework code:**
+```php
+if ($booking->user_id !== auth()->id()) {
+    abort(403);
+}
+```
+- this can prevents IDOR
+- proper authorisation
 
-
-
-
-
-
-
-
-
-  
 
 ### 6. File Security
 File security is enforced through strict file validation, secure storage configuration, and protection of sensitive server files to prevent unauthorized access and file leaks.
