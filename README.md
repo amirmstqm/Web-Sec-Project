@@ -5,13 +5,13 @@
 - Course: INFO 4345 Web Application Security
 - Project Type: Security Enhancement of Existing Web Application
 
-|     NAME      |   MATRIC NO.   |     TASK      | 
-| ------------- | ------------- | ------------- |
-|1. Amir Mustaqim Bin Ismail | 2218607 | Input Validation, Authentication |
-|2. Muhammad Zikry Bin Zulkipli | 2219579 | Authorization  |
-|3. Moha Math Yafa  | 2124769  | XSS and CSRF Prevention   |
-|4. Adam Azraei Bin Azhar |  2215967 | Database Security |
-|5. Alif Naqiuddin Bin Amienul Isqandar |  2219909 |   File Security    
+|     NAME      |   MATRIC NO.   |
+| ------------- | ------------- |
+|1. Amir Mustaqim Bin Ismail | 2218607 |
+|2. Muhammad Zikry Bin Zulkipli | 2219579 | 
+|3. Moha Math Yafa  | 2124769  |
+|4. Adam Azraei Bin Azhar |  2215967 | 
+|5. Alif Naqiuddin Bin Amienul Isqandar |  2219909 |
 
 ## Web Application Title
 Taqwa Travel – Shariah-Compliant Travel Planner
