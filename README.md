@@ -158,9 +158,9 @@ An audit was conducted on multiple controllers including AuthenticatedSessionCon
 | ------------- | ------------- | ------------- |
 |1. Login  | AuthenticedSessionController | email, password |
 |2. Registration | RegisteredUserController | name, email, password |
-|3. Booking | BookingController | booking id, form input |
+|3. Booking | BookingController | booking id |
 |4. Destination view | DestinationController | destination id |
-|5. Search | DestinationController | destination, dates
+|5. Search | DestinationController | search parameters
 
 #### 5.1.2 Test for SQL Injection
 - **Error exposure** <br>
@@ -181,11 +181,56 @@ payload: http://127.0.0.1:8000/login/destination/5' <br>
 Result: ![urlpaylaod](https://github.com/amirmstqm/Web-Sec-Project/blob/main/images/screenshot-url%20parameter%20injection.png)
 
 - **Analyze vulnerability**<br>
-  Manual SQL Injection testing was conducted by injecting common payloads into the login form and URL parameters. The application rejected all injection attempts. No SQL errors or system information were displayed, and authentication bypass was unsuccessful.
+  Manual SQL Injection testing was conducted by injecting common payloads into the login form and URL parameters. The application rejected all injection attempts. No SQL errors or system information were displayed, and authentication bypass was unsuccessful as shown in  *AuthenticatedSessionController.php*<b>
   
+  ```php
+   public function store(Request $request)
+    {
+        // Validate the login credentials
+        $credentials = $request->only('email', 'password');
 
+        // Attempt to log in the user
+        if (Auth::attempt($credentials)) {
+            // Regenerate the session to protect against session fixation
+            $request->session()->regenerate();
+
+            // Redirect the user to the home page
+            return redirect()->intended('/');
+        }
+
+        // If authentication fails, redirect back with an error message
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
+    }
+  ```
 
 #### 5.2 Defensive Programming (mitigation)
+##### 5.2.1 Parameterized Queries
+*DestinationController.php*
+```php
+$destination = Destination::findOrFail($id);
+```
+This project already compliant parameterized queries to prevent the SQL injection.
+
+##### 5.2.2 Input Validation (Specific fields)
+example from *DestinationController.php*
+```php
+ $request->validate([
+            'destination' => 'required',
+            'depart_date' => 'required|date',
+            'return_date' => 'required|date|after_or_equal:depart_date',
+            'travellers' => 'required|integer|min:1',
+            'cabin_class' => 'required|string',
+            'filter' => 'nullable|string|in:affordable,expensive',
+        ]);
+```
+#### 5.3 Error Handling & System Information
+##### 5.3.1 Disable Detailed Errors
+
+
+
+
 
 
 
