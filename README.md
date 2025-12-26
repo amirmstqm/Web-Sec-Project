@@ -306,6 +306,118 @@ if ($booking->user_id !== auth()->id()) {
 ### 6. File Security
 File security is enforced through strict file validation, secure storage configuration, and protection of sensitive server files to prevent unauthorized access and file leaks.
 
+#### 6.1 Securing Source Code and Sensitive Data
+##### 6.1.1 Review and Secure Credentials
+***YOU MUST NOT HARDCODED CREDENTIALS DIRECTLY INTO YOUR CONTROLLER OR CONFIG FILES!***
+1. Laravel Structure/Check: all the information are stored in the `.env` file
+   - commonly `.env` file are ignored by Git (usage of `.gitignore`)
+   - this measure ensure there is no important data publicly published to the Git
+2. Accessing Data:
+   - use `config()` instead of calling directly as example `env()` as to minimise exposing the sensitive data
+example:
+```php
+return [
+    // ...existing code...
+    'payment' => [
+        'api_key' => env('PAYMENT_API_KEY'),
+    ],
+    // ...existing code...
+];
+```
+*to be implemented in controller:*
+```php
+public function charge()
+    {
+        $key = Config::get('services.payment.api_key'); // evidence: config('services.payment.api_key')
+        // ...existing code...
+        return response()->json(['status' => 'ok']);
+    }
+```
+
+##### 6.1.2 Backup Management Policy
+- storing backup files like `.zip`, `.sql` inside folder(s) that is/are not publicly shown, example `storage/app/backups` 
+- this method will give error to the web if try to access through domain.
+
+##### 6.1.3 Hiding Secrets from Static contents
+- Comments in .blade.php files are processed by the server and removed before the HTML reaches the user. However, comments in .js or .css files remain visible.
+example:
+```php
+<?php
+{{-- Internal note: payment integration expects server-side key from config --}}
+/.../existing code...
+```
+- *Test: Use “View Source” on pages and confirm no secrets or sensitive comments appear*
+
+#### 6.2 Mitigating Path Manipulation and Forceful Browsing
+##### 6.2.1 Directory Listing Prevention
+- Laravel Default: Laravel’s `public/.htaccess` (for Apache) or Nginx config usually handles this by routing everything to index.php.
+- Test: Attempt to browse `/storage` or `/resources/views`. You should see an error page, not a list of files.
+
+##### 6.2.2 Secure File Handling and IDOR
+***Never trust user-supplied IDs or filenames***
+example:
+```php
+protected $fillable = [
+        'booking_id', 'payment_method', 'amount', 'payment_date', 'status'
+    ];
+```
+- implement **Laravel Policies** to ensure file is belong to logged-in user
+example:
+```php
+// Secure way to fetch a file for the logged-in user
+$file = Document::where('user_id', Auth::id())
+                ->where('id', $id)
+                ->firstOrFail(); // Returns 404 if not found or not owned [cite: 34]
+```
+
+##### 6.2.3 Preventing Directory Traversals
+- Validate filenames; reject ../, encoded traversal; canonicalize and enforce user-owned base directory
+example:
+```php
+public function show(Request $request)
+    {
+        $request->validate(['path' => ['required', 'string']]);
+        $path = $request->input('path');
+
+        if (Str::contains($path, ['..', '%2e%2e%2f', '\\'])) abort(400, 'Invalid path');
+
+        $canonical = realpath(Storage::disk('local')->path($path));
+        $base = realpath(Storage::disk('local')->path('uploads/' . $request->user()->id));
+        if (!$canonical || !Str::startsWith($canonical, $base)) abort(403);
+
+        if (!Storage::disk('local')->exists($path)) abort(404);
+        return response()->file($canonical);
+    }
+```
+***Report note: Do not use include/require with unsanitized user input***
+
+#### 6.3 Defensive Programming and Functionality
+##### 6.3.1 Move Sensitive Logic to Server-Side
+- create a routing on the client side specifically to handle sensitive logics
+- reason: to prevent attacker easily change the JavaScript to satisfy their purpose
+example implementation in *web.php*:
+```php
+<?php
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BookingController;
+
+Route::middleware(['web','auth'])->post('/booking/validate', [BookingController::class, 'validateCode']);
+```
+
+##### 6.3.2 Avoid Security through Obscurity
+- Security relies on layered controls, not hidden names
+```
+# Security Layers Implemented
+- Secrets in .env, accessed via config().
+- Public directory listing disabled (Options -Indexes).
+- Backup/dump files denied via .htaccess and ignored by VCS.
+- Authorization policies for file access (IDOR protection).
+- Strict input validation and canonicalization to prevent traversal.
+- Sensitive logic moved server-side (booking validation).
+```
+
 ## References
 
 
