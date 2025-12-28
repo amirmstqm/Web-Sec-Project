@@ -20,7 +20,15 @@ Taqwa Travel – Shariah-Compliant Travel Planner
 Traveling is a universal activity that bridges cultures, fosters understanding, and creates lasting memories. However, for Muslim travelers, finding accommodations, dining options, and prayer facilities that align with Islamic principles can be a significant challenge. The lack of easily accessible information on Shariah-compliant services often leads to inconvenience and limits their ability to enjoy travel experiences to the fullest.
 
 ## Objective of Security Enhancements
-Explain why security hardening is required.
+The primary objective of this project is to transform the *Taqwa Travel* web application (originally developed for INFO 3305) into a hardened, enterprise-grade platform. By integrating comprehensive security measures, we aim to mitigate risks identified in the **OWASP Top 10** and ensure the application is resilient against modern cyber threats.
+
+Our specific security goals include:
+
+1. Enforcing Data Integrity & Confidentiality: To protect sensitive user information (such as credentials and personal travel itineraries) by implementing rigorous Input Validation and industry-standard Encryption mechanisms.
+2. Strengthening Access Controls: To move beyond basic authentication by implementing Role-Based Access Control (RBAC) and Authorization Policies. This ensures that users can only access data they strictly own, effectively neutralizing Insecure Direct Object Reference (IDOR) attacks.
+3. Mitigating Injection Attacks: To secure the database and client-side interface against SQL Injection (SQLi) and Cross-Site Scripting (XSS) by utilizing parameterized queries and output encoding.
+4. Hardening Server Infrastructure: To prevent sensitive data leaks by securing the file system—disabling directory listings, hiding environment variables, and strictly validating file uploads to prevent Directory Traversal and malicious script execution.
+5. Building User Trust: To provide a secure, reliable platform for Muslim travelers, ensuring that the "Shariah-Compliant" promise extends to the ethical and secure handling of their personal data.
 
 ## Web Application Security Enhancements
 
@@ -419,6 +427,19 @@ Route::middleware(['web','auth'])->post('/booking/validate', [BookingController:
 ```
 
 ## References
+
+1. GitHub Docs: Markdown Syntax Guide - [https://docs.github.com/en/get-started/writing-on-github/basic-writing-and-formatting-syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+2. Laravel Documentation. (n.d.). *Validation*. Retrieved from [https://laravel.com/docs/10.x/validation](https://laravel.com/docs/10.x/validation)
+3. Laravel Documentation. (n.d.). *Authentication*. Retrieved from [https://laravel.com/docs/10.x/authentication](https://laravel.com/docs/10.x/authentication)
+4. Laravel Documentation. (n.d.). *Authorization*. Retrieved from [https://laravel.com/docs/10.x/authorization](https://laravel.com/docs/10.x/authorization)
+5. Laravel Documentation. (n.d.). *CSRF Protection*. Retrieved from [https://laravel.com/docs/10.x/csrf](https://laravel.com/docs/10.x/csrf)
+6. OWASP Foundation. (2021). *OWASP Top 10: A01:2021 – Broken Access Control*. Retrieved from [https://owasp.org/Top10/A01_2021-Broken_Access_Control/](https://owasp.org/Top10/A01_2021-Broken_Access_Control/)
+7. OWASP Foundation. (2021). *OWASP Top 10: A03:2021 – Injection*. Retrieved from [https://owasp.org/Top10/A03_2021-Injection/](https://owasp.org/Top10/A03_2021-Injection/)
+8. PHP Manual. (n.d.). *Handling File Uploads*. Retrieved from [https://www.php.net/manual/en/features.file-upload.php](https://www.php.net/manual/en/features.file-upload.php)
+9. National Institute of Standards and Technology (NIST). (2017). *Digital Identity Guidelines (SP 800-63B)*. Retrieved from [https://pages.nist.gov/800-63-3/sp800-63b.html](https://pages.nist.gov/800-63-3/sp800-63b.html)
+
+
+
 
 
 
