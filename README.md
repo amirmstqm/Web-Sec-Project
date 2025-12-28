@@ -406,7 +406,6 @@ public function show(Request $request)
 example implementation in *web.php*:
 ```php
 <?php
-<?php
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookingController;
