@@ -11,7 +11,7 @@
 |2. Muhammad Zikry Bin Zulkipli | 2219579 | 
 |3. Moha Math Yafa  | 2124769  |
 |4. Adam Azraei Bin Azhar |  2215967 | 
-|5. Alif Naqiuddin Bin Amienul Isqandar |  2219909 |
+|5. Alif Naqiudin Bin Amienur Isqandar |  2219909 |
 
 ## Web Application Title
 Taqwa Travel – Shariah-Compliant Travel Planner
@@ -268,16 +268,12 @@ DB_DATABASE=taqwa
 
 ##### 5.4.2 Review Permissions
 **Before:**
-```sql
-GRANT ALL PRIVILEGES ON Web-Sec-Project.* TO 'taqwa'@'localhost';
-```
+<img width="1419" height="755" alt="image" src="https://github.com/user-attachments/assets/a68f7e59-78c3-49f8-8b0a-9acd1bba5e45" />
 
 ##### 5.4.3 Reduce Privilege
 **After:**
-```sql
-GRANT SELECT, INSERT, UPDATE, DELETE ON Web-Sec-Project.* TO 'taqwa'@'localhost';
-REVOKE DROP, ALTER ON Web-Sec-Project.* FROM 'taqwa'@'localhost';
-```
+<img width="1411" height="756" alt="image" src="https://github.com/user-attachments/assets/fafefbff-abea-490d-90f5-eaf1554bcdf9" />
+
 - this implementation help limits damage if attack succeeds
 - meets least privilege principle
 
